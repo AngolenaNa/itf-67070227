@@ -1,3 +1,8 @@
+body {
+    align-items: center;
+    justify-content: center;
+}
+
 .profile{
     width: 300px;
     height: 300px;
@@ -6,6 +11,8 @@
     background-size: cover;
     background-position: center;
     position: relative;
+    align-items: center;
+    justify-content: center;
 }
 .notify{
     width: 50px;
