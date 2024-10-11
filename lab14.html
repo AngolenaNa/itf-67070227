@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 14</title>
+    <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+    <div class="profile" id="profile">
+        <div class="notify">
+            <p>1</p>
+        </div>
+    </div>
+    <h1 id="username">Username, hi</h1>
+    <label>Set Username</label>
+    <input id="input-name" type="text">
+    <button onclick="setName()">Set</button><br/>
+    <label>Set Image</label>
+    <input id="input-url" type="text">
+    <button onclick="setImg()">Set</button><br/>
+
+    <input type="text" id="text1" placeholder="Name">
+    <input type="text" id="text2" placeholder="Phone Number">
+    <button class="btn" onclick="addContact()">ADD</button>
+    <button class="btn" onclick="exportContacts()">EXPORT</button>
+    <table id="table">
+        <tr>
+            <th>Name</th>
+            <th>Phone Number</th>
+        </tr>
+    </table>
+
+    <script>
+        const nameElement = document.getElementById("username");
+        const inputName = document.getElementById("input-name");
+        const profile = document.getElementById("profile");
+        const inputUrl = document.getElementById("input-url");
+        const table = document.getElementById("table");
+        const inputTable1 = document.getElementById("text1");
+        const inputTable2 = document.getElementById("text2");
+
+        let contacts = [];
+        let entryCount = 0;
+
+        function setName() {
+            nameElement.textContent = inputName.value + ", N1";
+            inputName.value = "";
+        }
+
+        function setImg() {
+            profile.style.backgroundImage = "url(" + inputUrl.value + ")";
+        }
+
+        function addContact() {
+            const name = inputTable1.value;
+            const tel = inputTable2.value;
+
+            if (name.trim() && tel.trim()) {
+                entryCount++;
+                const row = table.insertRow();
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                cell1.textContent = entryCount;
+                cell2.textContent = name;
+                const cell3 = row.insertCell(2);
+                cell3.textContent = tel;
+
+                contacts.push({ name, phone: tel });   
+                inputTable1.value = '';
+                inputTable2.value = '';
+            }
+        }
+
+        function exportContacts() {
+            let csv = 'Name,Phone Number\n';
+            contacts.forEach(contact => {
+                csv += `${contact.name},${contact.phone}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'contacts.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+    </script>
+</body>
+</html>
